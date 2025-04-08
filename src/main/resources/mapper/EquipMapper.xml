@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.EquipMapper">
+    <insert id="add">
+        insert into equipment(name,stock_quantity,model,entry_date) values(#{name},#{stockQuantity},#{model},NOW())
+    </insert>
+    <insert id="lentRecord">
+        insert into borrowrecord(userid,borrow_date,return_date,status,equipment,num,model)
+        values(#{userid},#{borrowDate},#{returnDate},#{status},#{equipment},#{num},#{model})
+    </insert>
+    <select id="list" resultType="com.example.entity.Equipment">
+        select * from equipment
+    </select>
+    <select id="SelectByNameOrModel" resultType="com.example.entity.Equipment">
+        select * from equipment <where>
+        <if test="equipname !=null and equipname !=''">
+        name= #{equipname}
+        </if>
+        <if test="equipmodel != null and equipmodel !=''">
+            and model= #{equipmodel}
+        </if>
+    </where>
+    </select>
+    <update id="lentEquip">
+        update equipment set stock_quantity=stock_quantity-#{num} where name=#{equipment} and model=#{model} and stock_quantity>=0
+    </update>
+    <update id="BackEquip">
+        update equipment set stock_quantity=stock_quantity+#{num} where name=#{equipment} and model=#{model} and stock_quantity>=0
+    </update>
+    <update id="calibration">
+        update equipment set stock_quantity=#{stockQuantity} where name=#{name} and model=#{model}
+    </update>
+
+
+</mapper>

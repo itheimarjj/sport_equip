@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.UserMapper">
+    <insert id="addUser">
+        insert into user <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="userid !=null and userid !=''">userid,</if>
+        <if test="username !=null and username !=''">username,</if>
+        <if test="password != null and password !=''">password,</if>
+        <if test="role != null and role !=''">role,</if>
+        <if test="phoneNumber != null and phoneNumber !=''">phone_number</if>
+    </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userid !=null and userid !=''">#{userid},</if>
+            <if test="username !=null and username !=''">#{username},</if>
+            <if test="password != null and password !=''">#{password},</if>
+            <if test="role != null and role !=''">#{role},</if>
+            <if test="phoneNumber != null and phoneNumber !=''">#{phoneNumber}</if>
+        </trim>
+    </insert>
+    <update id="addPhoto">
+        update user set user_pic=#{fileUrl} where userid = #{userid}
+    </update>
+
+    <update id="updateUser">
+        update user set username=#{username},phone_number=#{phoneNumber} where userid = #{userid}
+    </update>
+    <update id="updatePassword">
+        update user set password=#{password} where userid = #{userid}
+    </update>
+    <delete id="deleteUser">
+        delete from user where userid = #{userid}
+    </delete>
+    <select id="list" resultType="com.example.entity.User">
+        select * from user
+    </select>
+    <select id="selectByNameOrRole" resultType="com.example.entity.User">
+        select * from user <where>
+        <if test="username!=null and username!=''">
+            username = #{username}
+        </if>
+        <if test="userrole!=null and userrole!=''">
+            and role = #{userrole}
+        </if>
+    </where>
+    </select>
+    <select id="borrowRecord" resultType="com.example.entity.BorrowRecord">
+        select * from borrowrecord where userid = #{userid}
+    </select>
+    <select id="selectUser" resultType="com.example.entity.User">
+        select * from user where userid = #{userid} and password = #{password}
+    </select>
+    <select id="selectUserInfo" resultType="com.example.entity.User">
+        select * from user where userid = #{userid}
+    </select>
+</mapper>

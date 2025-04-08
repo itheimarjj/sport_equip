@@ -1,0 +1,19 @@
+server:
+  port: 8080
+spring:
+#  jackson:
+#    time-zone: Asia/Shanghai
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/equipmentManagement?useSSL=false&serverTimezone=Asia/Shanghai
+
+mybatis:
+  mapper-locations: [classpath:/mapper/EquipMapper.xml,classpath:/mapper/UserMapper.xml]
+  configuration:
+    map-underscore-to-camel-case: true
+file:
+  upload-dir: C:\\Users\\ASUS\\Pictures
+
+
