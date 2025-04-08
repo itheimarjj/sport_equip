@@ -1,7 +1,9 @@
 package com.example.interceptor;
 
+import com.example.entity.User;
 import com.example.util.JWTUtils;
 import com.example.util.Result;
+import com.example.util.UserHolder;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -28,12 +30,17 @@ public class JwtInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        String userId = JWTUtils.parseToken(token.substring(7));
-        request.setAttribute("userid",userId);
-        if (userId == null) {
+        User user = JWTUtils.parseToken(token.substring(7));
+        if (user == null) {
             response.sendError(401, "无效的token");
             return false;
         }
+        UserHolder.saveUser(user);
         return true;
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        UserHolder.remUser();
     }
 }

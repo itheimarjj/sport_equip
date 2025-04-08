@@ -7,6 +7,7 @@ import com.example.entity.User;
 import com.example.service.UserService;
 import com.example.util.JWTUtils;
 import com.example.util.Result;
+import com.example.util.UserHolder;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,7 +139,6 @@ public class UserController {
         String s = "Bearer ";
         try {
             User selectUSer = userService.selectUSer(user);
-            System.out.println(selectUSer);
             if (selectUSer != null) {
                 result.setCode(200);
                 result.setMsg("登录成功");
@@ -157,11 +157,11 @@ public class UserController {
         }
 
     }
-
+    //获取用户信息
     @GetMapping("/userInfo")
-    public Result getUserInfo(@RequestAttribute("userid") String userid) {
+    public Result getUserInfo() {
         Result<Object> result = new Result<>();
-        User user = userService.selectUserInfo(userid);
+        User user = UserHolder.getUser();
         if (user != null) {
             result.setCode(200);
             result.setData(user);
