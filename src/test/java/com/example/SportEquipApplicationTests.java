@@ -47,4 +47,10 @@ class SportEquipApplicationTests {
 
         System.out.println(borrowRecords);
     }
+
+    @Test
+    void contextLoads4() {
+        int i = userMapper.addPhoto("http:1234", "1");
+        System.out.println(i);
+    }
 }

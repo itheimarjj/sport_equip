@@ -11,6 +11,7 @@ import com.example.util.UserHolder;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -201,14 +202,15 @@ public class UserController {
         result.setMsg("修改失败");
         return result;
     }
-
+    @Transactional
     @PatchMapping("/updateAvatar")
-    public Result updateAvatar(@RequestParam("avatarUrl") String url, HttpServletRequest request) {
+    public Result updateAvatar(@RequestParam("avatarUrl") String url) {
         Result result = new Result();
-        String userid = (String) request.getAttribute("userid");
-        System.out.println(url);
+        User user = UserHolder.getUser();
         if (!url.equals("null")){
-        int i = userService.updateAvatar(url, userid);
+            System.out.println("这里执行了");
+        int i = userService.updateAvatar(url, String.valueOf(user.getUserid()));
+            System.out.println(i);
         if (i!=0){
             result.setCode(200);
             result.setMsg("修改头像成功");
